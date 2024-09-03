@@ -1,12 +1,25 @@
-const paginacao = "?page=10&limit=10";
-const url = `https://starwars-databank-server.vercel.app/api/v1/characters${paginacao}`;
+const url = `https://starwars-databank-server.vercel.app/api/v1/characters?page=10&limit=30`;
+const listaordenada = document.getElementById("lista");
+
+function convertPersonagemToLi(personagem){
+    return `
+        <li class="personagem">
+            <span class="name">${personagem.name}</span>
+            <div class="detail">
+                <span class="description">${personagem.description}</span>
+                <img src="${personagem.image}" alt="${personagem.name}">
+            </div>
+        </li>
+    `
+}
 
 fetch(url)
     .then((response) => response.json())
-    .then((jsonBody) => jsonBody.data)
-    .then((starList) => {
-        for (let i = 0; i < starList.length; i++){
-            
+    .then((json) => json.data)
+    .then((starlist) => {
+        for (let i = 0; i < starlist.length; i++){
+            const personagem = starlist[i];
+            listaordenada.innerHTML += convertPersonagemToLi(personagem);
         }
     })
-    .catch((error) => console.log(error));
+    .catch((error) => console.log("O erro é " + error))
